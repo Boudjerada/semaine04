@@ -1,25 +1,12 @@
 <?php
-/**
- * \file      Jarditou.php
- * \author    Boudjerada Nadir
- * \version   1.0
- * \date       28 janvier 2021
- * \brief      Controleur de l'ensemble du site Jarditou
- * \details    Cette classe permet de gérer le site jarditou hormis la pagination, elle fait le lien entre les méthodes du models et l'affichage des vues
- */
+// application/controllers/Produits.php
 
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Jarditou extends CI_Controller {
 
-                       /**
-* \brief Fonction par défault pour pas d'accueil du site qui gére l'inscription et la connexion
-* \param  NUL
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
+
     public function index(){
         
         $aViewHeader = ["title" => "Inscription/connexion"];
@@ -163,13 +150,7 @@ class Jarditou extends CI_Controller {
    }
 
   
-                         /**
-* \brief Fonction de redirection sur page d'accueil du site
-* \param  NUL
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
+  
     public function accueil(){
 
 
@@ -186,13 +167,7 @@ class Jarditou extends CI_Controller {
 
 
     //ne sert plus, la liste est géréé avec pagination via le controlleur pagination
-                             /**
-* \brief Fonction d'affichage du tableau des produits, non utilisé sur le site. Le tableau est affiché par le controleur de pagination
-* \param  NUL
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
+    
     public function liste(){
         // Charge la librairie 'database'
         //$this->load->database();
@@ -227,14 +202,6 @@ class Jarditou extends CI_Controller {
        
         $this->load->view('jarditou/footer/footer');
     }
-                            
-    /**
-* \brief Fonction d'affichage du formulaire contact
-* \param  NUL
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
 
     public function contact(){
 
@@ -406,13 +373,6 @@ else {
         }
 }
 
-    /**
-* \brief Fonction détail pour l'affichage du détails d'un produit
-* \param  $id Identifiant du produit a afficher 
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
     public function detail($id){
         // Charge la librairie 'database'
         //$this->load->database();
@@ -438,13 +398,6 @@ else {
         $this->load->view('jarditou/footer/footer');
     }
 
-    /**
-* \brief Fonction ajout d'un produit dans la base produits
-* \param  NUL
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
 
     public function ajouter()
     {
@@ -603,13 +556,7 @@ else {
     } // --ajout()
 
 
-    /**
-* \brief Fonction modification d'un produit dans la base produits
-* \param  $id Identifiant du produit a modifier
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
+
 
     public function modifier($id)
     {
@@ -700,14 +647,6 @@ else {
         }
     } // -- modifier()
 
- 
-    /**
-* \brief Fonction suppression d'un produit dans la base produits
-* \param  $id Identifiant du produit a supprimer
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
 
     public function supprimer($id)
     {
@@ -742,13 +681,7 @@ else {
         }
     } // -- supprimer()
 
-    /**
-* \brief Fonction Inscription d'un utilisateur administrateur, système fermé accessible via une connexion d'un autre administrateur 
-* \param  NUL
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
+
     public function admin(){
 
        if ($this->input->post()){ // 2ème appel de la page: traitement du formulaire
@@ -851,14 +784,6 @@ else {
       
 }
 
-// Panier
-    /**
-* \brief Fonction qui charge le pannier et donc la vue correspondante d'un client
-* \param  NUL
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
 
 public function afficherPanier()
 {
@@ -869,15 +794,6 @@ public function afficherPanier()
 }
 
 //Panier
-
-    /**
-* \brief Fonction qui ajoute un produit au panier du client
-* \param  NUL
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
-
 public function ajouterPanier() 
 {
     // On récupère les données du formulaire 
@@ -889,22 +805,9 @@ public function ajouterPanier()
     $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>'); 
 
     if ($this->form_validation->run() == FALSE){
-          // Chargement du modèle 'produitsModel'
-        $this->load->model('produitsModel');
-
-          /* On appelle la méthode liste() du modèle,
-          * qui retourne le tableau de résultat ici affecté dans la variable $aListe (un tableau) 
-          * remarque la syntaxe $this->nomModele->methode()       
-          */
-        $aListe = $this->produitsModel->tab();
-      
-          // Ajoute des résultats de la requête au tableau des variables à transmettre à la vue   
-        $aView["liste_produits"] = $aListe;
-        $aViewHeader = ["title" => "Tableau"];
-
-        $this->load->view('jarditou/header/headerTableau',$aViewHeader);
-        $this->load->view('jarditou/tableau', $aView);
-        $this->load->view('jarditou/footer/footer');
+        $_SESSION['errqte'] = "La quantité doit être positif";
+        // On redirige sur la liste
+        redirect("Pagination/index");
     }
     else{
     
@@ -922,7 +825,7 @@ public function ajouterPanier()
         // On stocke le panier dans une variable de session nommée 'panier'            
         $_SESSION['panier'] = $aPanier;
         // On redirige sur la liste
-        redirect("Pagination");
+        redirect("Pagination/index");
 
 
         // 
@@ -951,7 +854,7 @@ public function ajouterPanier()
              
             $_SESSION['existeproduit'] = "Ce produit figure déjà dans votre commande, vous pouvez modifier sa quantité dans votre panier";
              // On redirige sur la liste
-             redirect("Pagination");
+             redirect("Pagination/index");
          }
          else 
          { // sinon, le produit est ajouté dans le panier
@@ -959,21 +862,13 @@ public function ajouterPanier()
 
             // On remet le tableau des produitss que  
             $_SESSION['panier'] = $aPanier;
-            redirect("Pagination");
+            redirect("Pagination/index");
          }
      }
     }
 }
 
 //panier
-
-    /**
-* \brief Fonction qui supprime un produit au panier du client
-* \param  $pro_id Identifiant du produit a supprimer
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
 public function supprimerProduit($pro_id)
 {
     $aPanier = $_SESSION['panier'];
@@ -998,29 +893,12 @@ public function supprimerProduit($pro_id)
 
 
 //Panier
-
-    /**
-* \brief Fonction qui vide l'ensemble du  panier du client
-* \param  NUL
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
-
 public function supprimepanier(){
     $_SESSION['panier'] = array();
      // On réaffiche le panier 
     redirect("jarditou/afficherPanier");
 
 }
-
-    /**
-* \brief Fonction qui ajoute +1 à la quantité du produit dans le panier
-* \param  $pro_id Identifiant du produit dont la quantité doit être augmenté
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
 
 public function ajoutQuantite($pro_id)
 {
@@ -1050,13 +928,6 @@ public function ajoutQuantite($pro_id)
     redirect("jarditou/afficherPanier");
 }
 
-    /**
-* \brief Fonction qui diminue -1 à la quantité du produit dans le panier
-* \param  $pro_id Identifiant du produit dont la quantité doit être diminué
-* \return NUL
-* \author Boudjerada Nadir
-* \date 28/01/2020
-*/
 public function diminueQuantite($pro_id){
     $aPanier = $_SESSION['panier'];
 

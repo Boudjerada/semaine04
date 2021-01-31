@@ -3,14 +3,10 @@ if  (isset ($_SESSION["status"])){
 
 ?>
 
-<div class="row">
-        <div class="col-12">
-                <a class="d-flex justify-content-center" href="<?= base_url("index.php/jarditou/afficherPanier");?>"><div><FONT COLOR="blue"><img src="<?php echo base_url("assets/images/iconepanier.png");?>" class="w-10" alt="Image responsive" title="panier" >(<?= count($_SESSION['panier']);?>)</FONT></div></a>
-        </div>
-</div>
     <br>
     <p id="tableau"></p>
-    <?php if  (isset ($_SESSION["existeproduit"])){?> <span id="alerte-mail" class="alert alert-danger"><?=$_SESSION['existeproduit'];?></span><?php }?>
+    <?php if  (isset ($_SESSION["existeproduit"])){?> <span id="alerte-existe" class="alert alert-danger"><?=$_SESSION['existeproduit'];?></span><?php }?>
+    <?php if  (isset ($_SESSION["errqte"])){?> <span id="alerte-positif" class="alert alert-danger"><?=$_SESSION['errqte'];?></span><?php }?>
     <br>
     <?php echo form_error('pro_qte'); // affiche l'erreur du champs concerné?>
     <br>
@@ -122,8 +118,10 @@ else  {?>
 
 <?php
        $_SESSION['existeproduit']="";
+       $_SESSION['errqte'] ="";
 
        unset($_SESSION['existeproduit']);
+       unset($_SESSION['errqte'] );
 ?>
 
 
